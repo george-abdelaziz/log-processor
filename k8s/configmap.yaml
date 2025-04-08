@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: user-activity-processor-config
+  # namespace: your-namespace # Optional: specify namespace
+data:
+  # Application Configuration
+  NODE_ENV: "production" # Set to production for deployed environments
+  PORT: "3000"
+  LOG_LEVEL: "info"
+
+  # Kafka Configuration - *** REPLACE WITH YOUR VALUES ***
+  KAFKA_BROKERS: "kafka-service:9092" # Example: Internal K8s service name or external brokers
+  KAFKA_CLIENT_ID: "user-activity-processor-k8s"
+  KAFKA_GROUP_ID: "user-activity-group-k8s"
+  KAFKA_TOPIC: "user-activity-logs"
+
+  # MongoDB Configuration - *** REPLACE WITH YOUR VALUE ***
+  # Consider using K8s Secrets for the URI if it contains credentials
+  MONGODB_URI: "mongodb://mongo-service:27017/user-activity" # Example: Internal K8s service name or external URI 

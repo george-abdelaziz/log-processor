@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-activity-processor-service
+  labels:
+    app: user-activity-processor
+spec:
+  selector:
+    app: user-activity-processor
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+  type: ClusterIP
+  # type: NodePort         # Exposes service on each Node's IP at a static port
+  # type: LoadBalancer     # Exposes service externally using a cloud provider's load balancer 

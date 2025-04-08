@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-activity-processor-deployment
+  labels:
+    app: user-activity-processor
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: user-activity-processor
+  template:
+    metadata:
+      labels:
+        app: user-activity-processor
+    spec:
+      containers:
+      - name: user-activity-processor
+        image: <your-dockerhub-username>/user-activity-processor:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+        envFrom:
+        - configMapRef:
+            name: user-activity-processor-config
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 15
+          periodSeconds: 20
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
